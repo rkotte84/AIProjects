@@ -1,0 +1,79 @@
+@page "/tasks"
+
+<h1>Task Manager</h1>
+
+<div class="mb-3">
+    <div class="input-group">
+        <input class="form-control" @bind="newTaskTitle" placeholder="Enter a new task..." @onkeyup="HandleKeyPress" />
+        <button class="btn btn-primary" @onclick="AddTask">Add Task</button>
+    </div>
+</div>
+
+@if (tasks.Count == 0)
+{
+    <div class="alert alert-info" role="alert">
+        No tasks yet. Add a new task to get started!
+    </div>
+}
+else
+{
+    <div class="list-group mb-3">
+        @foreach (var task in tasks)
+        {
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <input type="checkbox" @bind="task.IsCompleted" class="me-2" />
+                    <span class="@(task.IsCompleted ? "text-decoration-line-through text-muted" : "")">
+                        @task.Title
+                    </span>
+                </div>
+                <button class="btn btn-sm btn-danger" @onclick="() => RemoveTask(task)">Delete</button>
+            </div>
+        }
+    </div>
+    
+    <div class="d-flex justify-content-between">
+        <span>@CompletedTasksCount of @tasks.Count task(s) completed</span>
+        <button class="btn btn-sm btn-outline-danger" @onclick="ClearCompletedTasks">Clear Completed</button>
+    </div>
+}
+
+@code {
+    private List<TaskItem> tasks = new();
+    private string newTaskTitle = string.Empty;
+
+    private void AddTask()
+    {
+        if (!string.IsNullOrWhiteSpace(newTaskTitle))
+        {
+            tasks.Add(new TaskItem { Title = newTaskTitle });
+            newTaskTitle = string.Empty;
+        }
+    }
+
+    private void RemoveTask(TaskItem task)
+    {
+        tasks.Remove(task);
+    }
+    
+    private void ClearCompletedTasks()
+    {
+        tasks.RemoveAll(t => t.IsCompleted);
+    }
+    
+    private void HandleKeyPress(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            AddTask();
+        }
+    }
+
+    private int CompletedTasksCount => tasks.Count(t => t.IsCompleted);
+
+    private class TaskItem
+    {
+        public string Title { get; set; } = string.Empty;
+        public bool IsCompleted { get; set; }
+    }
+}
