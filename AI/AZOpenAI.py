@@ -3,9 +3,13 @@ import base64
 import json
 from openai import AzureOpenAI
 
-endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
+endpoint = os.getenv("AZURE_ENDPOINT")
 deployment = os.getenv("DEPLOYMENT_NAME", "gpt-4.1")
-subscription_key = os.getenv("AZURE_OPENAI_KEY")
+subscription_key = os.getenv("AZURE_KEY")
+
+print(endpoint)
+print(subscription_key)
+
 
 # Initialize Azure OpenAI client with key-based authentication
 client = AzureOpenAI(
