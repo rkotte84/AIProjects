@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ profile.name }} - Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header role="banner">
+        <h1>{{ profile.name }}</h1>
+        <p class="title">{{ profile.title }}</p>
+    </header>
+
+    <main role="main">
+        <section aria-labelledby="contact-heading">
+            <h2 id="contact-heading">Contact Information</h2>
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <span class="label">Email:</span>
+                    <a href="mailto:{{ profile.email }}" aria-label="Send email to {{ profile.name }}">{{ profile.email }}</a>
+                </div>
+                <div class="contact-item">
+                    <span class="label">Phone:</span>
+                    <a href="tel:{{ profile.phone }}" aria-label="Call {{ profile.name }}">{{ profile.phone }}</a>
+                </div>
+                <div class="contact-item">
+                    <span class="label">Location:</span>
+                    <span>{{ profile.location }}</span>
+                </div>
+            </div>
+        </section>
+
+        <section aria-labelledby="about-heading">
+            <h2 id="about-heading">About Me</h2>
+            <p>{{ profile.about }}</p>
+        </section>
+
+        <section aria-labelledby="skills-heading">
+            <h2 id="skills-heading">Skills</h2>
+            <ul class="skills-list" role="list">
+                {% for skill in profile.skills %}
+                <li class="skill-item">{{ skill }}</li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <section aria-labelledby="experience-heading">
+            <h2 id="experience-heading">Experience</h2>
+            <div class="experience-list">
+                {% for job in profile.experience %}
+                <article class="experience-item">
+                    <h3>{{ job.position }}</h3>
+                    <div class="company-duration">
+                        <span class="company">{{ job.company }}</span>
+                        <span class="duration">{{ job.duration }}</span>
+                    </div>
+                    <p class="description">{{ job.description }}</p>
+                </article>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+
+    <footer role="contentinfo">
+        <p>&copy; 2024 {{ profile.name }}. All rights reserved.</p>
+    </footer>
+</body>
+</html>
